@@ -1,7 +1,12 @@
+import numpy as np
+import os
+import struct
+from array import array as pyarray
+
 def load_mnist(dataset="training", digits=np.arange(10), path=".", size = 60000):
     if dataset == "training":
-        fname_img = os.path.join(path, 'train-images-idx3-ubyte')
-        fname_lbl = os.path.join(path, 'train-labels-idx1-ubyte')
+        fname_img = os.path.join(path, 'train-images.idx3-ubyte')
+        fname_lbl = os.path.join(path, 'train-labels.idx1-ubyte')
     elif dataset == "testing":
         fname_img = os.path.join(path, 't10k-images.idx3-ubyte')
         fname_lbl = os.path.join(path, 't10k-labels.idx1-ubyte')
@@ -21,10 +26,10 @@ def load_mnist(dataset="training", digits=np.arange(10), path=".", size = 60000)
 
     ind = [ k for k in range(size) if lbl[k] in digits ]
     N = size #int(len(ind) * size/100.)
-    images = zeros((N, rows, cols), dtype=uint8)
-    labels = zeros((N, 1), dtype=int8)
+    images = np.zeros((N, rows, cols), dtype=np.uint8)
+    labels = np.zeros((N, 1), dtype=np.int8)
     for i in range(N): #int(len(ind) * size/100.)):
-        images[i] = array(img[ ind[i]*rows*cols : (ind[i]+1)*rows*cols ])\
+        images[i] = np.array(img[ ind[i]*rows*cols : (ind[i]+1)*rows*cols ])\
             .reshape((rows, cols))
         labels[i] = lbl[ind[i]]
     labels = [label[0] for label in labels]
